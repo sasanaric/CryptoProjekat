@@ -43,6 +43,7 @@ public class Crypto {
         encryptFile(MAPTXT);
         deleteFile(MAP_PATH);
     }
+
     public static void putUsersPasswords(String username, String password) throws Exception {
         BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(PASSWORDS_PATH, true));
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -53,6 +54,7 @@ public class Crypto {
         bufferedWriter.close();
         putUserInMap(username);
     }
+
     public static boolean usernameIsTaken(String username) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new FileReader(PASSWORDS_PATH));
         String linija;
@@ -67,6 +69,7 @@ public class Crypto {
         bufferedReader.close();
         return false;
     }
+
     public static boolean CheckUserPassword(String username, String password) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new FileReader(PASSWORDS_PATH));
         String linija;
@@ -85,6 +88,7 @@ public class Crypto {
         bufferedReader.close();
         return false;
     }
+
     public static void generatePrivateKey(String username) throws Exception{
         String[] command = {"cmd", "/c", GEN_KEY_BATCH,username};
         ProcessBuilder pb = new ProcessBuilder(command);
@@ -93,35 +97,7 @@ public class Crypto {
         Process process = pb.start();
         process.waitFor();
     }
-//    public static void signCertificateRequest(String name) throws Exception{
-//        ProcessBuilder pb = new ProcessBuilder("cmd.exe","/c","openssl ca -in requests/"+name+".csr " +
-//                "-out certs/"+name+".crt -config openssl.cnf");
-//        pb.directory(new File(PRIPREMA_PATH));
-//        Process process = pb.start();
-//        OutputStream outputStream = process.getOutputStream();
-//        outputStream.write("y\n".getBytes());
-//        outputStream.write("y\n".getBytes());
-//        outputStream.flush();
-//        outputStream.close();
-//        process.waitFor();
-//    }
-//    public static void generateCertificateRequest(String username,String password) throws Exception{
-//        generatePrivateKey(username);
-//        ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", "openssl req -new -key private/"+username+".key " +
-//                "-out requests/"+username+".csr -config openssl.cnf -days 180");
-//        pb.directory(new File(PRIPREMA_PATH));
-//        Process process = pb.start();
-//        OutputStream outputStream = process.getOutputStream();
-//        outputStream.write("\n".getBytes());outputStream.write("\n".getBytes());outputStream.write("\n".getBytes());
-//        outputStream.write("\n".getBytes());outputStream.write("\n".getBytes());
-//        outputStream.write((username+"\n").getBytes());
-//        outputStream.write((username+"@mail.com\n").getBytes());
-//        putUsersPasswords(username,password);
-//        outputStream.flush();
-//        outputStream.close();
-//        process.waitFor();
-//
-//    }
+
     public static void generateCertificateRequest(String username) throws Exception{
         generatePrivateKey(username);
         String[] command = {"cmd", "/c", GEN_CRT_REQ_BATCH,username};
@@ -138,6 +114,7 @@ public class Crypto {
         process.waitFor();
 
     }
+
     public static void signCertificateRequest(String username) throws Exception{
         String[] command = {"cmd", "/c", SIGN_CRT_REQ_BATCH,username};
         ProcessBuilder pb = new ProcessBuilder(command);
@@ -150,12 +127,6 @@ public class Crypto {
         outputStream.close();
         process.waitFor();
     }
-//    public static void generatePrivateKey(String username) throws Exception{
-//        ProcessBuilder pb = new ProcessBuilder("cmd.exe", "/c", "openssl genrsa -out private/"+username+".key 2048");
-//        pb.directory(new File(PRIPREMA_PATH));
-//        Process process = pb.start();
-//        process.waitFor();
-//    }
 
     public static void registerUser(String username,String password) throws Exception{
         putUsersPasswords(username,password);
@@ -163,6 +134,7 @@ public class Crypto {
         generateCertificateRequest(username);
         signCertificateRequest(username);
     }
+
     public static void revokeCertificate(String username) throws Exception{
         System.out.println("START REVOKE");
         String[] command = {"cmd", "/c", REVOKE_CERTIFICATE_BATCH,username};
@@ -182,6 +154,7 @@ public class Crypto {
         System.out.println("revokeCertificate()");
         genCRL();
     }
+
     public static void genCRL() throws Exception{
         String[] command = {"cmd", "/c", GEN_CRL_BATCH};
         ProcessBuilder pb = new ProcessBuilder(command);
@@ -191,6 +164,7 @@ public class Crypto {
         process.waitFor();
         System.out.println("genCRL()");
     }
+
     public static boolean checkCertificate(String certName) throws Exception{
         FileInputStream certificateFile = new FileInputStream(CERTS_PATH+certName);
         FileInputStream crlFile = new FileInputStream(CRL_PATH);
@@ -212,6 +186,7 @@ public class Crypto {
             }
         }
     }
+
     public static void removeCertificateHold(String username) throws Exception{
         BufferedReader br = new BufferedReader(new FileReader(INDEX_PATH));
         StringBuilder text= new StringBuilder();
@@ -229,6 +204,7 @@ public class Crypto {
         bw.close();
         genCRL();
     }
+
     public static List<String> getFiles(String username) throws Exception{
         decryptFile(MAPTXT);
         BufferedReader bufferedReader = new BufferedReader(new FileReader(MAP_PATH));
@@ -255,6 +231,7 @@ public class Crypto {
         deleteFile(MAP_PATH);
         return files;
     }
+
     public static List<String> getFilePaths(String username,String file) throws Exception{
         decryptFile(MAPTXT);
         BufferedReader bufferedReader = new BufferedReader(new FileReader(MAP_PATH));
@@ -279,6 +256,7 @@ public class Crypto {
         deleteFile(MAP_PATH);
         return paths;
     }
+
     public static List<String> divideFile(String fileName) throws Exception {
         deleteFile(SECURE_FOLDER_PATH+fileName);
         int numSegments = new Random().nextInt(7)+4;
@@ -314,6 +292,7 @@ public class Crypto {
         inputFile.delete();
         return segments;
     }
+
     public static void assembleFile(String inputFileName, List<String> segments) throws IOException {
         File outputFile = new File(SECURE_FOLDER_PATH+inputFileName+".enc");
         byte[] buffer = new byte[1024];
@@ -332,6 +311,7 @@ public class Crypto {
             }
         }
     }
+
     public static void putSegments(String username,String filename,List<String> segments) throws Exception{
         decryptFile(MAPTXT);
        BufferedReader br = new BufferedReader(new FileReader(MAP_PATH));
@@ -377,13 +357,16 @@ public class Crypto {
         deleteFile(MAP_PATH);
         return segments;
     }
+
     public static String generateFileName() {
         UUID uuid = UUID.randomUUID();
         return uuid.toString();
     }
+
     public static String getDirectoryPath(int i){
         return SECURE_FOLDER_PATH+"/D"+i+"/";
     }
+
     public static List<String> getAlgKeySign(){
         List<String> algKeySign = new ArrayList<>();
         try {
@@ -404,6 +387,7 @@ public class Crypto {
         }catch (Exception e){System.out.println("getAlgKey() Exception");}
         return algKeySign;
     }
+
     public static void encryptFile(String fileName) throws Exception{
         String[] command = {"cmd", "/c", ENC_FILE_BATCH,ALG,KEY,fileName};
         ProcessBuilder pb = new ProcessBuilder(command);
@@ -412,6 +396,7 @@ public class Crypto {
         Process process = pb.start();
         process.waitFor();
     }
+
     public static void decryptFile(String fileName) throws Exception{
         String[] command = {"cmd", "/c",DEC_FILE_BATCH,ALG,KEY,fileName};
         ProcessBuilder pb = new ProcessBuilder(command);
@@ -420,12 +405,14 @@ public class Crypto {
         Process process = pb.start();
         process.waitFor();
     }
+
     public static void deleteFile(String path){
         File file = new File(path);
         try{
             file.delete();
         }catch (Exception e){System.out.println("deleteFile() Exception");}
     }
+
     public static void signFile(String username,String filename) throws Exception{
         String[] command = {"cmd", "/c", SIGN_FILE_BATCH,SIGN,username,filename};
         ProcessBuilder pb = new ProcessBuilder(command);
@@ -434,6 +421,7 @@ public class Crypto {
         Process process = pb.start();
         process.waitFor();
     }
+
     public static boolean verifyFile(String username,String filename) throws Exception{
         String[] command = {"cmd", "/c", VERIFY_FILE_BATCH,SIGN,username,filename};
         ProcessBuilder pb = new ProcessBuilder(command);
