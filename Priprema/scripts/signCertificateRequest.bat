@@ -1,0 +1,1 @@
+openssl ca -in requests/%1.csr -out certs/%1.crt -config openssl.cnf

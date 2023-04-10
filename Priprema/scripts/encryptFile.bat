@@ -1,0 +1,1 @@
+openssl enc -e -%1 -in SecureFolder/%3 -out SecureFolder/%3.enc -k %2 -pbkdf2

@@ -1,0 +1,1 @@
+openssl ca -revoke certs/%1.crt -crl_reason certificateHold -config openssl.cnf

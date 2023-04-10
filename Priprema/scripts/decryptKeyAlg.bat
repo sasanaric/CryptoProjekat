@@ -1,0 +1,1 @@
+openssl pkeyutl -decrypt -in alg-key.enc -out alg-key.txt -inkey private/private4096.key

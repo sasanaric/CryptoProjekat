@@ -1,0 +1,1 @@
+openssl dgst -%1 -prverify private/%2.key -signature SecureFolder/Potpisi/%2-%3.sign SecureFolder/%3

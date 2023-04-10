@@ -1,0 +1,1 @@
+openssl genrsa -out private/%1.key 2048

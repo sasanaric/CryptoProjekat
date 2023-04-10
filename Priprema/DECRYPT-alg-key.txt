@@ -1,0 +1,3 @@
+alg:camellia-256-ecb
+key:sigurnost
+sign:sha256

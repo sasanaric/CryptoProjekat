@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="320.0" prefWidth="410.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cryptoprojekat.ApplicationController">
+   <children>
+      <Button fx:id="loginButton" layoutX="14.0" layoutY="234.0" mnemonicParsing="false" onAction="#setLoginButton" prefHeight="72.0" prefWidth="122.0" text="LogIn" />
+      <Button fx:id="registracijaButton" layoutX="273.0" layoutY="234.0" mnemonicParsing="false" onAction="#setRegistracijaButton" prefHeight="72.0" prefWidth="122.0" text="Registracija" />
+      <ImageView fitHeight="176.0" fitWidth="241.0" layoutX="117.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@crypto.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

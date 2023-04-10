@@ -1,0 +1,1 @@
+openssl req -new -key private/%1.key -out requests/%1.csr -config openssl.cnf -days 180
